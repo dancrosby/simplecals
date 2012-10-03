@@ -3,51 +3,92 @@
 <head>
 <title>Your New Application</title>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8"> 
-<style type="text/css">
-    /* Prevent copy paste for all elements except text fields */
-    *  { -webkit-user-select:none; -webkit-tap-highlight-color:rgba(255, 255, 255, 0); }
-    input, textarea  { -webkit-user-select:text; }
-    
-    /* Set up the page with a default background image */
-    body {
-        background-color:#fff;
-        color:#000;
-        font-family:Arial;
-        font-size:48pt;
-        margin:0px;padding:0px;
-        background-image:url('images/background.jpg');
-    }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<link rel="stylesheet" type="text/css" href="//cdn.jqmobi.com/themes/icons.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.jqmobi.com/themes/jq.ui.volcano.css" title="volcano" />
+
+<!--
 <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script> 
 <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/xhr.js"></script> 
-<script type="text/javascript">
-/* This function runs once the page is loaded, but appMobi is not yet active */
-var init = function(){
+-->
+<script type="text/javascript" src="//cdn.jqmobi.com/jq.mobi.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="//cdn.jqmobi.com/jq.ui.min.js"></script>
+    <!-- include touch.js on desktop browsers only -->
+    <script>
+        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+            var script = document.createElement("script");
+            script.src = "touch.js";
+            var tag = $("head").append(script);
+            $.os.android = true; //let's make it run like an android device
+            $.os.desktop = true;
+        }
+    </script>
+    <script type="text/javascript">
+         
+        var webRoot = "./";
+        $.ui.autoLaunch = false; //By default, it is set to true and you're app will run right away.  We set it to false to show a splashscreen
+        /* This function runs when the body is loaded.*/
+        var init = function () {
+                $.ui.backButtonText = "Back";// We override the back button text to always say "Back"
+                window.setTimeout(function () {
+                    $.ui.launch(); 
+                }, 1500);//We wait 1.5 seconds to call $.ui.launch after DOMContentLoaded fires
+        };
+        document.addEventListener("DOMContentLoaded", init, false);
+        $.ui.ready(function () {
+debugger;
 
-};
-window.addEventListener("load",init,false);  
-
-/* This code prevents users from dragging the page */
-var preventDefaultScroll = function(event) {
-    event.preventDefault();
-    window.scroll(0,0);
-    return false;
-};
-document.addEventListener('touchmove', preventDefaultScroll, false);
-
-/* This code is used to run as soon as appMobi activates */
-var onDeviceReady=function(){
-    //Size the display to 768px by 1024px
-    AppMobi.display.useViewport(768,1024);
-	
-	//hide splash screen
-	AppMobi.device.hideSplashScreen();	
-};
-document.addEventListener("appMobi.device.ready",onDeviceReady,false);    
+            $('#submit').on('click', 'p', function() {
+debugger;
+            });
+            //This function will get executed when $.ui.launch has completed
+            $('#submit').tap(function(a,b,c,d,e) {
+                debugger;
+            });
+        });
+ 
+        
+        /* This code is used for appMobi native apps */
+        var onDeviceReady = function () {
+                AppMobi.device.setRotateOrientation("portrait");
+                AppMobi.device.setAutoRotate(false);
+                webRoot = AppMobi.webRoot + "/";
+                //hide splash screen
+                AppMobi.device.hideSplashScreen();
+ 
+        };
+        document.addEventListener("appMobi.device.ready", onDeviceReady, false);
 </script>
 
 </head>
 <body>
+    <div id="jQUi"> <!-- this is the main container div.  This way, you can have only part of your app use jqUi -->
+        <!-- this is the header div at the top -->
+        <div id="header">
+        </div>
+        <div id="content">
+
+           <!-- here is where you can add your panels -->
+            <div title='SimpleCals' id="main" class="panel" selected="true"></div>
+                <p>In the last 24 hours, you have used <span id="last24">0</span> cals.</p>
+                <p>You have <span id="leftMan">2500</span> cals left</p>
+
+                <div>
+                    <p>
+                    <label for="addCals">Add cals</label>
+                    <input type="number" id="addCals" value="300" />
+                    <input type="button" id="submit" value="Submit" />
+                    </p>    
+                </div>
+
+        </div>
+        <!-- bottom navbar. Add additional tabs here -->
+        <div id="navbar">
+            <div class="horzRule"></div>
+            <a href="#main" id='navbar_home' class='icon home'>home</a>
+        </div>
+    </div>
 <!-- content goes here-->
 </body>
 </html>
