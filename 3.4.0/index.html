@@ -1,94 +1,64 @@
-<!DOCTYPE html><!--HTML5 doctype-->
+<!DOCTYPE html>
+<!--HTML5 doctype-->
 <html>
-<head>
-<title>Your New Application</title>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+     
+    <head>
+        <title>SimpleCals</title>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="stylesheet" type="text/css" href="//cdn.jqmobi.com/themes/icons.css" />
+        <link rel="stylesheet" type="text/css" href="//cdn.jqmobi.com/themes/jq.ui.volcano.css" title="volcano" />
+        <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script> 
+        <script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/xhr.js"></script>   
+        <script type="text/javascript" charset="utf-8" src="//cdn.jqmobi.com/jq.ui.min.js"></script>
+        <!-- include touch.js on desktop browsers only -->
+        <script>
+            if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
+                var script = document.createElement("script");
+                script.src = "//cdn.jqmobi.com/touch.js";
+                var tag = $("head").append(script);
+                $.os.android = true; //let's make it run like an android device
+                $.os.desktop = true;
+            }
+        </script>
+        <script type="text/javascript" src="js/simplecals.js"></script>
+    </head>
+    <body>
+        <div id="jQUi"> <!-- this is the main container div.  This way, you can have only part of your app use jqUi -->
+            <!-- this is the header div at the top -->
+            <div id="header">
+                <a href="javascript:$.ui.toggleSideMenu()" class="button" style="float:right">Toggle Nav</a>
+            </div>
+            <div id="content">
+                <!-- here is where you can add your panels -->
+                <div title='SimpleCals' id="main" class="panel" selected="true">
 
-<link rel="stylesheet" type="text/css" href="//cdn.jqmobi.com/themes/icons.css" />
-<link rel="stylesheet" type="text/css" href="//cdn.jqmobi.com/themes/jq.ui.volcano.css" title="volcano" />
+                    <p>In the last 24 hours, you have used <span id="last24">0</span> cals.</p>
+                    <p>You have <span id="leftMan">2500</span> cals left</p>
 
-<!--
-<script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script> 
-<script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/xhr.js"></script> 
--->
-<script type="text/javascript" src="//cdn.jqmobi.com/jq.mobi.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="//cdn.jqmobi.com/jq.ui.min.js"></script>
-    <!-- include touch.js on desktop browsers only -->
-    <script>
-        if (!((window.DocumentTouch && document instanceof DocumentTouch) || 'ontouchstart' in window)) {
-            var script = document.createElement("script");
-            script.src = "touch.js";
-            var tag = $("head").append(script);
-            $.os.android = true; //let's make it run like an android device
-            $.os.desktop = true;
-        }
-    </script>
-    <script type="text/javascript">
-         
-        var webRoot = "./";
-        $.ui.autoLaunch = false; //By default, it is set to true and you're app will run right away.  We set it to false to show a splashscreen
-        /* This function runs when the body is loaded.*/
-        var init = function () {
-                $.ui.backButtonText = "Back";// We override the back button text to always say "Back"
-                window.setTimeout(function () {
-                    $.ui.launch(); 
-                }, 1500);//We wait 1.5 seconds to call $.ui.launch after DOMContentLoaded fires
-        };
-        document.addEventListener("DOMContentLoaded", init, false);
-        $.ui.ready(function () {
-debugger;
+                    <div>
+                        <p>
+                        <label for="addCals">Add cals</label>
+                        <input type="number" id="addCals" value="300" min="1" max="2000" />
+                        <a id="btnAdd" class="button">Add</a>
+                        </p>
+                    </div>
 
-            $('#submit').on('click', 'p', function() {
-debugger;
-            });
-            //This function will get executed when $.ui.launch has completed
-            $('#submit').tap(function(a,b,c,d,e) {
-                debugger;
-            });
-        });
- 
-        
-        /* This code is used for appMobi native apps */
-        var onDeviceReady = function () {
-                AppMobi.device.setRotateOrientation("portrait");
-                AppMobi.device.setAutoRotate(false);
-                webRoot = AppMobi.webRoot + "/";
-                //hide splash screen
-                AppMobi.device.hideSplashScreen();
- 
-        };
-        document.addEventListener("appMobi.device.ready", onDeviceReady, false);
-</script>
+                    <div id="overQuota">
+                        Too much!
+                    </div>
 
-</head>
-<body>
-    <div id="jQUi"> <!-- this is the main container div.  This way, you can have only part of your app use jqUi -->
-        <!-- this is the header div at the top -->
-        <div id="header">
-        </div>
-        <div id="content">
+                    <div id="log">
+                    </div>
 
-           <!-- here is where you can add your panels -->
-            <div title='SimpleCals' id="main" class="panel" selected="true"></div>
-                <p>In the last 24 hours, you have used <span id="last24">0</span> cals.</p>
-                <p>You have <span id="leftMan">2500</span> cals left</p>
-
-                <div>
-                    <p>
-                    <label for="addCals">Add cals</label>
-                    <input type="number" id="addCals" value="300" />
-                    <input type="button" id="submit" value="Submit" />
-                    </p>    
                 </div>
-
+            </div>
+            <!-- bottom navbar. Add additional tabs here -->
+            <div id="navbar">
+                <div class="horzRule"></div>
+                <a href="#main" id='navbar_home' class='icon home'>home</a>
+            </div>
         </div>
-        <!-- bottom navbar. Add additional tabs here -->
-        <div id="navbar">
-            <div class="horzRule"></div>
-            <a href="#main" id='navbar_home' class='icon home'>home</a>
-        </div>
-    </div>
-<!-- content goes here-->
-</body>
+    </body>
 </html>
