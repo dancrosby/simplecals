@@ -43,14 +43,10 @@ $.ui.ready(function () {
 
     function renderHistory() {
         var minTimestamp = new Date().getTime() - resetMilliseconds;
-        var numberToRemove = 0;
-
-        $('#log').empty();
-        
         var tmp = '<table class="log">';
-
-        var historyLength = history.length;
         var totalCals = 0;
+        var numberToRemove = 0;
+        var historyLength = history.length;
         for(var i = 0; i < historyLength; i++) {
             tmp += '<tr><td>Time</td><td>'
                 + history[i].time
@@ -69,7 +65,6 @@ $.ui.ready(function () {
             console.log("Removing");
             history.shift();
         }
-
         tmp += '</table>';
 
         $('#log').html(tmp);
